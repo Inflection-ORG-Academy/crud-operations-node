@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CRM - Tool</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: Arial, Helvetica, sans-serif;
+      }
+
+      body {
+        padding: 24px;
+      }
+
+      table,
+      tr,
+      td,
+      th {
+        border: 1px solid black;
+        padding: 6px 12px;
+      }
+
+      table,
+      tr {
+        border-collapse: collapse;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>All Customers</h1>
+
+    <table id="customers">
+      <tr>
+        <td>SN</td>
+        <td>Name</td>
+        <td>Mobile Number</td>
+        <td>Address</td>
+      </tr>
+    </table>
+
+    <script>
+      function renderTable(customers = []) {
+        const tableEl = document.getElementById("customers");
+
+        customers.forEach((customer, i) => {
+          tableEl.innerHTML += `<tr>
+        <td>${i + 1}</td>
+        <td>${customer.name}</td>
+        <td>${customer.mobileNo}</td>
+        <td>${customer.address}</td>
+      </tr>`;
+        });
+      }
+
+      const getAllCustomers = async () => {
+        try {
+          const res = await fetch("http://127.0.0.1:5000/customers", {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          });
+          const data = await res.json();
+          renderTable(data.customers);
+          console.log(data);
+        } catch (error) {
+          console.log(error);
+        }
+      };
+
+      window.addEventListener("load", () => {
+        getAllCustomers();
+      });
+    </script>
+  </body>
+</html>
